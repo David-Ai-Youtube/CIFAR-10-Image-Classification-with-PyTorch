@@ -1,6 +1,7 @@
 import torch
 import torchvision
 import torchvision.transforms as transforms
+from torch.utils.tensorboard import SummaryWriter
 
 # Loading the dataset
 transform = transforms.Compose(
@@ -43,7 +44,9 @@ net = Net()
 criterion = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
-for epoch in range(2):
+writer = SummaryWriter()
+
+for epoch in range(10):
     running_loss = 0.0
     for i, data in enumerate(trainloader, 0):
         inputs, labels = data
@@ -57,6 +60,7 @@ for epoch in range(2):
 
         running_loss += loss.item()
         if i % 2000 == 1999:    
+            writer.add_scalar('training_loss', running_loss / 2000, epoch * len(trainloader) + i)
             print('[%d, %5d] loss: %.3f' %
                   (epoch + 1, i + 1, running_loss / 2000))
             running_loss = 0.0
@@ -74,5 +78,10 @@ with torch.no_grad():
         total += labels.size(0)
         correct += (predicted == labels).sum().item()
 
+    accuracy = 100 * correct / total
+    writer.add_scalar('accuracy', accuracy, epoch)
+
 print('Accuracy of the network on the 10000 test images: %d %%' % (
-    100 * correct / total))
+    accuracy))
+
+writer.close()
