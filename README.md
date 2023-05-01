@@ -7,6 +7,7 @@ defining the neural network architecture, training the network, and testing its 
 
 
 ```
+  #To load in colab tensorboard
   from torch.utils import tensorboard
   %load_ext tensorboard
   %tensorboard --logdir ./runs/
