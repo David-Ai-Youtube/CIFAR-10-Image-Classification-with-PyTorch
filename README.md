@@ -6,7 +6,8 @@ and the accuracy of the network is tested on a set of 10,000 images. The code in
 defining the neural network architecture, training the network, and testing its accuracy.
 
 
-
+```
   from torch.utils import tensorboard
   %load_ext tensorboard
   %tensorboard --logdir ./runs/
+```
